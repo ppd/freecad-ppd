@@ -93,8 +93,6 @@ package-repositories:
     ppa: elmer-csc-ubuntu/elmer-csc-ppa
   - type: apt
     ppa: openscad/releases
-  - type: apt
-    ppa: freecad-maintainers/occt-releases
 
 parts:
   stub-chown:
@@ -109,7 +107,27 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
+  occt:
+    plugin: cmake
+    source: https://git.dev.opencascade.org/repos/occt.git
+    source-tag: V7_6_1
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DUSE_TBB:BOOL=on
+      - -DUSE_VTK:BOOL=off
+      - -DUSE_FREEIMAGE:BOOL=on
+      - -DBUILD_RELEASE_DISABLE_EXCEPTIONS:BOOL=off
+      - -DCMAKE_BUILD_TYPE=Release
+    build-packages:
+      - libfreeimage-dev
+      - libfreetype6-dev
+      - tcl-dev
+      - tk-dev
+      - libtbb-dev
+      - libgl-dev
+
   freecad:
+    after: [occt]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
@@ -143,14 +161,6 @@ parts:
       - swig
       - python3-dev
       - libcoin-dev
-      - libocct-data-exchange-dev
-      - libocct-draw-dev
-      - libocct-foundation-dev
-      - libocct-modeling-algorithms-dev
-      - libocct-modeling-data-dev
-      - libocct-ocaf-dev
-      - libocct-visualization-dev
-      - occt-draw
       - libvtk7-dev
       - libpyside2-dev
       - libshiboken2-dev
@@ -203,12 +213,6 @@ parts:
       - calculix-ccx # FEM
       - libcoin80c
       - libfreeimage3
-      - libocct-data-exchange-7.5
-      - libocct-foundation-7.5
-      - libocct-modeling-algorithms-7.5
-      - libocct-modeling-data-7.5
-      - libocct-ocaf-7.5
-      - libocct-visualization-7.5
       - libtbb2
       - libvtk7.1p
       - elmerfem-csc # FEM
@@ -249,7 +253,7 @@ parts:
       - -pyvenv.cfg
 
   cleanup:
-    after: [stub-chown, freecad, pip, gmsh, snap-setup-mod]
+    after: [stub-chown, occt, freecad, pip, gmsh, snap-setup-mod]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
