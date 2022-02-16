@@ -125,6 +125,12 @@ parts:
       - tk-dev
       - libtbb-dev
       - libgl-dev
+    override-build: |
+      snapcraftctl build
+      find "${SNAPCRAFT_PART_INSTALL}/usr/lib/cmake" \
+        -type f \
+        -name "*.cmake" \
+        -exec sed -i -e "s|\${OCCT_INSTALL_BIN_LETTER}||g" {} \;
 
   freecad:
     after: [occt]
