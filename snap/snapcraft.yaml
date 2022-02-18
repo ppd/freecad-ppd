@@ -125,7 +125,7 @@ parts:
     build-snaps:
       - freecad-deps-core20
     stage-snaps:
-      - freecad-deps-core20
+      - freecad-deps-core20 # trigger build
     build-packages:
       - g++
       - git
