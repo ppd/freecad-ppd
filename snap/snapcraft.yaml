@@ -107,31 +107,6 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
-  occt:
-    plugin: cmake
-    source: https://git.dev.opencascade.org/repos/occt.git
-    source-tag: V7_6_1
-    cmake-parameters:
-      - -DCMAKE_INSTALL_PREFIX=/usr
-      - -DUSE_TBB:BOOL=on
-      - -DUSE_VTK:BOOL=off
-      - -DUSE_FREEIMAGE:BOOL=on
-      - -DBUILD_RELEASE_DISABLE_EXCEPTIONS:BOOL=off
-      - -DCMAKE_BUILD_TYPE=Release
-    build-packages:
-      - libfreeimage-dev
-      - libfreetype6-dev
-      - tcl-dev
-      - tk-dev
-      - libtbb-dev
-      - libgl-dev
-    override-build: |
-      snapcraftctl build
-      find "${SNAPCRAFT_PART_INSTALL}/usr/lib/cmake" \
-        -type f \
-        -name "*.cmake" \
-        -exec sed -i -e "s|\${OCCT_INSTALL_BIN_LETTER}||g" {} \;
-
   freecad:
     after: [occt]
     plugin: cmake
@@ -148,6 +123,10 @@ parts:
       - -DFREECAD_USE_PYBIND11=ON
       - -DFREECAD_USE_QT_FILEDIALOG=ON
       - -DBUILD_FLAT_MESH=ON
+    build-snaps:
+      - freecad-deps-core20
+    stage-snaps:
+      - freecad-deps-core20
     build-packages:
       - g++
       - git
@@ -238,17 +217,6 @@ parts:
       version="$version_major.$version_minor~$git_hash"
       snapcraftctl set-version "$version"
 
-  gmsh: # FEM
-    plugin: cmake
-    source: https://gitlab.onelab.info/gmsh/gmsh.git
-    source-tag: gmsh_4_9_3
-    cmake-parameters:
-      - -DCMAKE_INSTALL_PREFIX=/usr
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_BUILD_DYNAMIC=1
-      - -DENABLE_MED=0
-      - -DENABLE_FLTK=0
-
   pip:
     plugin: python
     python-packages:
@@ -259,7 +227,7 @@ parts:
       - -pyvenv.cfg
 
   cleanup:
-    after: [stub-chown, occt, freecad, pip, gmsh, snap-setup-mod]
+    after: [stub-chown, freecad, pip, snap-setup-mod]
     plugin: nil
     build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
     override-prime: |
