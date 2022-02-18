@@ -108,7 +108,6 @@ parts:
       "*": usr/Mod/SnapSetup/
 
   freecad:
-    after: [occt]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
     cmake-parameters:
