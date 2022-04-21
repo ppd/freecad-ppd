@@ -1,6 +1,6 @@
 name: freecad-ppd
 base: core20
-version: "0.19.4"
+adopt-info: freecad
 summary: An open source parametric 3D CAD modeler
 description: |
   FreeCAD is a parametric 3D modeler. Parametric modeling
@@ -11,10 +11,6 @@ description: |
 
   FreeCAD is multiplatfom, and reads and writes many open
   file formats such as STEP, IGES, STL and others.
-
-  This is an unofficial snap meant to explore improvements
-  in packaging FreeCAD. It is mostly complete, but you
-  should also consider the more official `freecad` snap.
   
   Do _not_ complain to upstream about issues with this snap!
 
@@ -121,7 +117,6 @@ parts:
     after: [patches]
     plugin: cmake
     source: https://github.com/FreeCAD/FreeCAD.git
-    source-tag: ${SNAPCRAFT_PROJECT_VERSION}
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_INSTALL_LIBDIR=lib
@@ -227,13 +222,19 @@ parts:
         patch -p1 < "$p"
       done
     override-build: |
-      kde_sdk_dir="/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+      kde_sdk_dir="/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
       mkdir -p /etc/xdg/qtchooser
       cp "$kde_sdk_dir/etc/xdg/qtchooser/default.conf" "/etc/xdg/qtchooser/default.conf"
       snapcraftctl build
       sed -i -E \
         "s|^Icon=(.*)|Icon=\${SNAP}/usr/share/icons/hicolor/scalable/apps/org.freecadweb.FreeCAD.svg|g" \
         $SNAPCRAFT_PART_INSTALL/usr/share/applications/org.freecadweb.FreeCAD.desktop
+      cd $SNAPCRAFT_PART_SRC
+      version_major=$(grep "set(PACKAGE_VERSION_MAJOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      version_minor=$(grep "set(PACKAGE_VERSION_MINOR" CMakeLists.txt | tr -d '()"' | cut -d" " -f2)
+      git_hash=$(git rev-parse --short=8 HEAD)
+      version="${version_major}.${version_minor}-g$git_hash"
+      snapcraftctl set-version "$version"
 
   gmsh: # FEM
     plugin: cmake
@@ -258,10 +259,10 @@ parts:
   cleanup:
     after: [stub-chown, freecad, pip, gmsh, snap-setup-mod]
     plugin: nil
-    build-snaps: [kde-frameworks-5-qt-5-15-3-core20]
+    build-snaps: [kde-frameworks-5-91-qt-5-15-3-core20]
     override-prime: |
       set -eux
-      for snap in "kde-frameworks-5-qt-5-15-3-core20"; do  # List all content-snaps you're using here
+      for snap in "kde-frameworks-5-91-qt-5-15-3-core20"; do  # List all content-snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
       done
       for cruft in bug lintian man; do
