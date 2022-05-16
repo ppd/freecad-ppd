@@ -117,6 +117,12 @@ parts:
     organize:
       "*": usr/Mod/SnapSetup/
 
+  snap-migration-prompt:
+    plugin: dump
+    source: snap/local/snap-migration-prompt
+    organize:
+      "*": usr/Mod/SnapMigrationPrompt/
+
   freecad:
     after: [patches]
     plugin: cmake
@@ -257,7 +263,7 @@ parts:
       - -pyvenv.cfg
 
   cleanup:
-    after: [stub-chown, freecad, pip, gmsh, snap-setup-mod]
+    after: [stub-chown, freecad, pip, snap-setup-mod, snap-migration-prompt]
     plugin: nil
     build-snaps: [kde-frameworks-5-91-qt-5-15-3-core20]
     override-prime: |
