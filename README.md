@@ -1,10 +1,18 @@
 # freecad-ppd: Unofficial snap package for FreeCAD
 
-> This is an unoffical package, so **do _not_ complain to upstream about issues with this snap!**
+## Deprecation notice
 
-[![freecad-ppd](https://snapcraft.io/freecad-ppd/badge.svg)](https://snapcraft.io/freecad-ppd)
+> `freecad-ppd` has been adopted as FreeCAD's official snap.
+> Please install the `freecad` snap to continue receiving updates.
+> Go to https://github.com/freeCAD/freeCAD-snap to find the repository of the
+current implementation.
+> The new snap is available at https://snapcraft.io/freecad
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad-ppd)
+<!-- > This is an unoffical package, so **do _not_ complain to upstream about issues with this snap!** -->
+
+<!-- [![freecad-ppd](https://snapcraft.io/freecad-ppd/badge.svg)](https://snapcraft.io/freecad-ppd)
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/freecad-ppd) -->
 
 ## About FreeCAD
 
