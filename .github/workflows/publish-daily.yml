@@ -1,8 +1,8 @@
 name: Publish Daily
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # Every day at 0:00
+  # schedule:
+  #   - cron: "0 0 * * *" # Every day at 0:00
   workflow_dispatch: # or manually
     
 jobs:

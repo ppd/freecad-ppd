@@ -1,8 +1,8 @@
 name: Promote to Beta
 
 on:
-  schedule:
-    - cron: "0 4 * * 0" # Every Sunday at 4:00
+  # schedule:
+  #   - cron: "0 4 * * 0" # Every Sunday at 4:00
   workflow_dispatch: # or manually
     
 jobs:
