@@ -27,7 +27,6 @@ def show_migration_prompt():
   </p>
   """)
 
-  dlg.setIcon(QMessageBox.Icon.Information)
   dlg.addButton(QMessageBox.Ok)
   dlg.setDefaultButton(QMessageBox.Ok)
   dlg.setCheckBox(checkbox)
